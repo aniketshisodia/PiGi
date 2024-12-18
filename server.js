@@ -12,6 +12,6 @@ mongoose.connect(DB).then(() => {
     // .catch(err => console.log(err));
 });
 
-app.listen(8000, () => {
-    console.log('Server  is runnning at port 8000 ');
+app.listen(3000, () => {
+    console.log('Server  is runnning at port 3000 ');
 });
