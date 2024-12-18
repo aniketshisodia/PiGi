@@ -7,10 +7,7 @@ const app = require('./app');
 
 const DB = process.env.DATABASE.replace('<DATABASE_PASSWORD>', process.env.DATABASE_PASSWORD);
 
-mongoose.connect(DB, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => {
+mongoose.connect(DB).then(() => {
     console.log('DB Connection');
     // .catch(err => console.log(err));
 });
