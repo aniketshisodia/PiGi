@@ -1,5 +1,9 @@
 const User = require('../model/userModel');
+const bcrypt = require('bcrypt');
 
+// *******************************************************************************************//
+
+// SIGNUP FUNCTIONALITY
 exports.signUp = async (req, res) => {
     try {
         // destructuring object
@@ -33,3 +37,53 @@ exports.signUp = async (req, res) => {
         });
     }
 }
+
+// *******************************************************************************************//
+
+// *******************************************************************************************//
+
+// LOGIN FUNCTIONALITY
+
+exports.login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        // check is email and password exist
+        if (!email || !password) {
+            return res.status(400).json({
+                status: 'fail',
+                message: 'Please provoide a valid mail'
+            });
+        }
+        // find the user by email
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({
+                status: 'fail',
+                message: 'Invalid email or password'
+            });
+        }
+        const isCorrectPassword = await bcrypt.compare(password, user.password);
+        if (!isCorrectPassword) {
+            return res.status(400).json({
+                status: 'fail',
+                message: 'Invalid email or password'
+            });
+        }
+        res.status(200).json({
+            status: 'success',
+            message: 'Login Successful',
+            data: {
+                name: user.name,
+                email: user.email
+            }
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            status: 'fail',
+            messgae: error.message
+        });
+    }
+};
+
+// *******************************************************************************************//
