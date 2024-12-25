@@ -1,0 +1,19 @@
+JWT Workflow
+Signing the JWT on the Server:
+
+When a user logs in or performs some action requiring authentication, the server generates a JWT with the jwt_secret key. The jwt_secret is used to sign the token so that the server can later verify that the token was issued by it and has not been tampered with.
+The JWT is then sent to the client (usually in the response body or in an HTTP-only cookie).
+Sending the JWT to the Client:
+
+Once the JWT is generated and signed, it is sent to the client. This can be done as part of the response to the login request.
+The JWT can be stored on the client side (in localStorage, sessionStorage, or cookies, preferably HTTP-only for better security).
+The secret key (jwt_secret) is never exposed to the client in any form.
+Verifying the JWT on the Server (when the client makes a request):
+
+When the client makes a request to the server (e.g., to access a protected route), it includes the JWT in the Authorization header as a Bearer token:
+plaintext
+Copy code
+Authorization: Bearer <jwt_token>
+The server then takes the JWT from the request header and decodes it.
+To verify that the token is legitimate, the server uses the jwt_secret key (stored securely on the server) to validate the token's signature. If the signature matches, the token is valid, and the server can safely trust the claims inside the payload (e.g., user ID, roles).
+The server doesn't need to send the jwt_secret to the client for this verification. The jwt_secret only needs to remain securely on the server side for signing and verification.
