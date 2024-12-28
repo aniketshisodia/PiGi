@@ -63,6 +63,7 @@ exports.login = async (req, res) => {
         }
         // find the user by email
         const user = await User.findOne({ email });
+        console.log(user);
         if (!user) {
             return res.status(400).json({
                 status: 'fail',
@@ -77,9 +78,8 @@ exports.login = async (req, res) => {
             });
         }
 
-        // generate token
-        const token = authcontroller.generateToken(newUser._id);
-
+        const token = authcontroller.generateToken(user._id);
+        console.log('token login', token);
         // send response
         res.status(200).json({
             status: 'success',

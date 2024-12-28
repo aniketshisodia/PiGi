@@ -20,12 +20,14 @@ exports.protectRoute = (req, res, next) => {
     // abc123xyz456 is the actual token(an encoded string, typically a JWT token in the case of modern web apps).
 
     const token = req.headers.authorization?.split(' ')[1];
+
+    console.log('token -> ', token);
     // authorization? ----> optional chaining , if authorization is null
 
     if (!token) {
-        return res.status(401).json({ message: 'You are not logged in !' });
+        return res.status(401).json({ message: 'No token !' });
     }
-
+    console.log('token', token);
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
             return res.status(403).json({ message: 'Invalid Token !' });
