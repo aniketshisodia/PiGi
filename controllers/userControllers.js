@@ -7,7 +7,7 @@ const authcontroller = require('./authController');
 exports.signUp = async (req, res) => {
     try {
         // destructuring object
-        const { name, email, password, passwordConfirm } = req.body;
+        const { name, email, password, passwordConfirm, role } = req.body;
 
         console.log(req.body);
 
@@ -20,7 +20,7 @@ exports.signUp = async (req, res) => {
             });
         }
         // create new user
-        const newUser = await User.create({ name, email, password, passwordConfirm });
+        const newUser = await User.create({ name, email, password, passwordConfirm, role });
 
         // generate token
 
