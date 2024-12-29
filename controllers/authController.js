@@ -2,8 +2,8 @@
 const jwt = require('jsonwebtoken');
 
 // Generate jwt tokens
-exports.generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, {
+exports.generateToken = (id, role) => {
+    return jwt.sign({ id, role }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES_IN
     });
 };
@@ -46,4 +46,20 @@ exports.protectRoute = (req, res, next) => {
     //     If the token is valid, the payload of the token is returned to the callback function in
     //     the decoded parameter.The payload contains information encoded into the JWT, like the
     //     user’s ID, roles, permissions, etc.
+}
+
+// ***************************************************************************************************//
+
+// RESTRICT TO middleware , to restrict role based access:-
+exports.restrictTo = (...roles) => {
+    return (req, res, next) => {
+        const { role } = req.user;
+        if (!roles.includes(role)) {
+            return res.status(403).json({
+                staus: 'fail',
+                message: 'Your dont have permission to perform this function'
+            });
+        }
+        next();
+    }
 }
